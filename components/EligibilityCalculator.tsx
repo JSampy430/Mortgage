@@ -11,6 +11,7 @@ const [hasInitializedStep3, setHasInitializedStep3] = useState(false);
 
  // Inside your component
 const [formData, setFormData] = useState<FormData>(getInitialFormData());
+const [eligibilityAmount, setEligibilityAmount] = useState<number | null>(null);
 
 
 
@@ -127,7 +128,7 @@ const handleFinalSubmit = async () => {
   }
 
   try {
-    const response = await fetch("https://formspree.io/f/mdkdwdpa", {
+    const response = await fetch("https://formspree.io/f/xovlkkda", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -273,6 +274,19 @@ useEffect(() => {
 
 }, [formData]);
 
+useEffect(() => {
+  const income = parseInt(formData.income || '0');
+  const loanTerm = parseInt(formData.loanTerm || '0');
+
+  if (income > 0 && loanTerm > 0) {
+    const baseEligibility = income * 20;
+    const adjustedEligibility = baseEligibility * (loanTerm / 25);
+    setEligibilityAmount(Math.round(adjustedEligibility));
+  } else {
+    setEligibilityAmount(null);
+  }
+}, [formData.income, formData.loanTerm]);
+
 
 useEffect(() => {
   if (step === 3 && !hasInitializedStep3) {
@@ -320,6 +334,7 @@ type FormData = {
   nationality: string;
   employmentType: string;
   resident: string;
+  income: string;
   email: string;
   phone: string;
   dob1: string;
@@ -467,13 +482,15 @@ type FormData = {
               <div key={i}>
                 <h3 className="text-xl font-semibold mb-4">Joint Applicant {i}</h3>
                 <div className="space-y-4">
-                  <input
+                 <label className="block font-semibold text-gray-800 mb-1">
+  Date of Birth
+</label>
+<input
   type="date"
   name={`dob${i}`}
   value={formData[`dob${i}`] ?? ''}
   onChange={handleChange}
   className={inputClasses}
-  placeholder="Date of Birth"
 />
 
 
@@ -584,56 +601,67 @@ if (step === 3) {
             <div key={i}>
               <h3 className="text-xl font-semibold mb-4">Joint Applicant {i}</h3>
               <div className="space-y-4">
-          <input
-  type="number"
-  name={`homeLoan${i}`}
-  value={formData[`homeLoan${i}`] ?? ''}
-  onChange={handleChange}
-  className={inputClasses}
-  placeholder="Home Loan(s) Monthly Installment"
-/>
-
-<input
-  type="number"
-  name={`autoLoan${i}`}
-  value={formData[`autoLoan${i}`] ?? ''}
-  onChange={handleChange}
-  className={inputClasses}
-  placeholder="Auto Loan(s) Monthly Installment"
-/>
-
-<input
-  type="number"
-  name={`personalLoan${i}`}
-  value={formData[`personalLoan${i}`] ?? ''}
-  onChange={handleChange}
-  className={inputClasses}
-  placeholder="Personal Loan(s) Monthly Installment"
-/>
-
-<input
-  type="number"
-  name={`overdraft${i}`}
-  value={formData[`overdraft${i}`] ?? ''}
-  onChange={handleChange}
-  className={inputClasses}
-  placeholder="Overdraft Limit"
-/>
-
-<input
-  type="number"
-  name={`creditLimit${i}`}
-  value={formData[`creditLimit${i}`] ?? ''}
-  onChange={handleChange}
-  className={inputClasses}
-  placeholder="Credit Card Limit(s) Total Limit Of All Active Credit"
-/>
-
+                <input
+                  type="number"
+                  name={`homeLoan${i}`}
+                  value={formData[`homeLoan${i}`] ?? ''}
+                  onChange={handleChange}
+                  className={inputClasses}
+                  placeholder="Home Loan(s) Monthly Installment"
+                />
+                <input
+                  type="number"
+                  name={`autoLoan${i}`}
+                  value={formData[`autoLoan${i}`] ?? ''}
+                  onChange={handleChange}
+                  className={inputClasses}
+                  placeholder="Auto Loan(s) Monthly Installment"
+                />
+                <input
+                  type="number"
+                  name={`personalLoan${i}`}
+                  value={formData[`personalLoan${i}`] ?? ''}
+                  onChange={handleChange}
+                  className={inputClasses}
+                  placeholder="Personal Loan(s) Monthly Installment"
+                />
+                <input
+                  type="number"
+                  name={`overdraft${i}`}
+                  value={formData[`overdraft${i}`] ?? ''}
+                  onChange={handleChange}
+                  className={inputClasses}
+                  placeholder="Overdraft Limit"
+                />
+                <input
+                  type="number"
+                  name={`creditLimit${i}`}
+                  value={formData[`creditLimit${i}`] ?? ''}
+                  onChange={handleChange}
+                  className={inputClasses}
+                  placeholder="Credit Card Limit(s) Total Limit Of All Active Credit"
+                />
               </div>
             </div>
           ))}
+
+          {/* ✅ Total Income Field aligned in grid */}
+          <div className="col-span-2">
+            <label className="block font-semibold text-gray-800 mb-2 text-lg">
+              Total Monthly Income (AED)
+            </label>
+            <input
+              type="number"
+              name="income"
+              value={formData.income || ''}
+              onChange={handleChange}
+              className={inputClasses}
+              placeholder="e.g. 25,000"
+            />
+          </div>
         </div>
 
+        {/* Navigation Buttons */}
         <div className="mt-10 flex justify-between">
           <button
             onClick={() => setStep(2)}
@@ -653,30 +681,80 @@ if (step === 3) {
   );
 }
 
+if (step === 4) {
+  const income = parseInt(formData.income || '0');
+  const loanTerm = parseInt(formData.loanTerm || '0');
+  const baseEligibility = income * 20;
+  const adjustedEligibility = baseEligibility * (loanTerm / 25);
+  const eligibilityAmount = isNaN(adjustedEligibility) ? 0 : Math.round(adjustedEligibility);
 
-  if (step === 4) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[url('/background.jpg')] bg-cover bg-center">
-        <div className="w-full max-w-2xl bg-white/80 backdrop-blur-md p-10 rounded-3xl shadow-2xl text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Final Step</h2>
-          <p className="text-lg text-gray-700 mb-8">Enter your contact details to complete your submission.</p>
-          <div className="space-y-6">
-            <input name="email" value={formData.email} onChange={handleChange} className={inputClasses} type="email" placeholder="Email ID" />
-            <input name="phone" value={formData.phone} onChange={handleChange} className={inputClasses} type="tel" placeholder="Mobile Number" />
-            <button
-  onClick={handleFinalSubmit} // ✅ replace this
-  className="bg-red-600 text-white w-full py-4 mt-4 rounded-xl text-xl hover:bg-red-700 transition font-semibold shadow-md"
->
-  Submit
-</button>
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-[url('/background.jpg')] bg-cover bg-center">
+      <div className="w-full max-w-2xl bg-white/80 backdrop-blur-md p-10 rounded-3xl shadow-2xl text-center">
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">Final Step</h2>
+        <p className="text-lg text-gray-700 mb-8">
+          Enter your contact details to complete your submission.
+        </p>
 
+        <div className="space-y-6">
+          {/* Result Message */}
+          {eligibilityAmount > 0 && (
+            <div className="text-center text-lg font-semibold text-green-700 bg-green-100 p-4 rounded-xl shadow-sm">
+              🎉 You're eligible for a mortgage of <br />
+              <span className="text-2xl text-green-900 font-bold">
+                AED {eligibilityAmount.toLocaleString()} over {formData.loanTerm} years
+              </span>
+            </div>
+          )}
 
+          {/* Dropdown for Loan Term */}
+          <select
+            name="loanTerm"
+            value={formData.loanTerm}
+            onChange={handleChange}
+            required
+            className="w-full border border-gray-300 rounded-xl px-4 py-3 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Select Loan Term (Years)</option>
+            {Array.from({ length: 16 }, (_, i) => 10 + i).map((year) => (
+              <option key={year} value={year}>
+                {year} Years
+              </option>
+            ))}
+          </select>
 
-          </div>
+          {/* Email Field */}
+          <input
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className={inputClasses}
+            type="email"
+            placeholder="Email ID"
+          />
+
+          {/* Phone Field */}
+          <input
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            className={inputClasses}
+            type="tel"
+            placeholder="Mobile Number"
+          />
+
+          {/* Submit Button */}
+          <button
+            onClick={handleFinalSubmit}
+            className="bg-red-600 text-white w-full py-4 mt-4 rounded-xl text-xl hover:bg-red-700 transition font-semibold shadow-md"
+          >
+            Submit
+          </button>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   if (step === 5) {
     return (

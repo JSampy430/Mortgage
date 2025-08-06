@@ -48,16 +48,16 @@ export default function Home() {
       {/* --- Navigation Bar (Updated) --- */}
 <nav className="w-full bg-black text-white py-8 px-8 flex items-center justify-between fixed top-0 z-50 shadow-md">
   {/* Logo - Bigger and properly fitted */}
-  <Link href="/" className="flex items-center gap-2">
-    <Image
-      src="/logoBlack.png" // Make sure this is your transparent version
-      alt="Best Mortgage Logo"
-      width={120} // Was 160
-      height={50} // Was 50
-      className="object-contain"
-      priority
-    />
-  </Link>
+ <Link href="/" className="flex items-center gap-2 pl-4">
+  <Image
+    src="/logoBlack.png"
+    alt="Best Mortgage Logo"
+    width={180}
+    height={60}
+    className="object-contain ml-2 mt-[-4px]" // Move logo up slightly
+    priority
+  />
+</Link>
 
   {/* Center Nav Links - Larger spacing and font */}
   <div className="hidden md:flex space-x-10 text-lg font-semibold">
@@ -156,10 +156,10 @@ export default function Home() {
 {/* Stats Section */}
 <section className="max-w-6xl mx-auto px-6 py-10 bg-white/80 backdrop-blur-lg rounded-2xl shadow-md grid grid-cols-2 md:grid-cols-4 text-center text-gray-800 z-10 relative">
   {[
-    { value: '1000+', label: 'Successful Transactions.' },
-    { value: '20+', label: 'Years of Experience.' },
-    { value: '150+', label: 'Mortgage Offers.' },
-    { value: '100%', label: 'Customer Satisfaction.' },
+    { value: '95%', label: 'Loan Approval Rate' },
+    { value: '1,500+', label: 'Clients Assisted' },
+    { value: '180+', label: 'Partner Banks' },
+    { value: '4.9★', label: 'Average Customer Rating' },
   ].map((stat, i) => (
     <div key={i} className={`py-4 ${i !== 0 ? 'border-l border-gray-300' : ''}`}>
       <p className="text-3xl font-extrabold text-gray-900 mb-1">{stat.value}</p>
@@ -317,6 +317,23 @@ export default function Home() {
     </div>
   </div>
 </section>
+<a
+  href="https://wa.me/971501234567?text=Hi%2C%20I%27m%20interested%20in%20mortgage%20options"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-lg flex items-center justify-center transition"
+  title="Chat with us on WhatsApp"
+>
+  <svg
+    xmlns="https://wa.me/971585706750"
+    fill="currentColor"
+    viewBox="0 0 24 24"
+    className="w-6 h-6"
+  >
+    <path d="M20.52 3.48a11.9 11.9 0 00-8.42-3.49A11.89 11.89 0 003.48 20.52L2 24l3.61-1.46A11.88 11.88 0 0012 24h.01a11.9 11.9 0 008.51-20.52zm-8.5 17.5h-.01a10.06 10.06 0 01-5.08-1.4l-.36-.21-2.14.86.41-2.33-.22-.36a9.91 9.91 0 1117.27-7.03 9.93 9.93 0 01-9.88 10.47zm5.45-7.56c-.3-.15-1.75-.86-2.02-.96s-.47-.15-.66.15-.76.95-.93 1.15-.34.22-.63.07a8.14 8.14 0 01-2.4-1.48 9 9 0 01-1.67-2.08c-.17-.3 0-.46.13-.61.13-.15.3-.37.45-.56a2 2 0 00.3-.51.55.55 0 00-.02-.52c-.07-.15-.66-1.6-.91-2.19s-.49-.48-.67-.49h-.56a1.08 1.08 0 00-.78.36 3.26 3.26 0 00-1 2.42c0 1.43 1 2.8 1.14 3 .15.22 2 3.16 4.87 4.43a16.64 16.64 0 001.68.62 4 4 0 001.83.11c.56-.08 1.75-.71 2-1.4s.25-1.27.17-1.4-.27-.2-.56-.35z" />
+  </svg>
+</a>
+
 
 </main>
 </>
