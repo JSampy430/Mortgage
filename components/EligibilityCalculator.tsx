@@ -25,6 +25,7 @@ function getInitialFormData(): FormData {
     resident: '',
     email: '',
     phone: '',
+    income: '', // ✅ ADD THIS
     dob1: '',
     dob2: '',
     businessLength1: '',
