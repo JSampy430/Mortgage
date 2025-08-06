@@ -26,6 +26,7 @@ function getInitialFormData(): FormData {
     email: '',
     phone: '',
     income: '', // ✅ ADD THIS
+    loanTerm: '', // ✅ ADD THIS
     dob1: '',
     dob2: '',
     businessLength1: '',
