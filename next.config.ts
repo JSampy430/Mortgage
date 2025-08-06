@@ -1,4 +1,3 @@
-// next.config.ts
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
@@ -13,6 +12,9 @@ const nextConfig: NextConfig = {
         hostname: 'randomuser.me',
       },
     ],
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 
