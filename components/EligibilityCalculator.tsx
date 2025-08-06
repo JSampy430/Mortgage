@@ -329,6 +329,7 @@ useEffect(() => {
 
 type FormData = {
   [key: string]: string | undefined;
+
   applicantType: string;
   considerJointIncome: string;
   numberOfApplicants: string;
@@ -336,10 +337,13 @@ type FormData = {
   employmentType: string;
   resident: string;
   income: string;
+  loanTerm: string; // ✅ ADD THIS LINE
   email: string;
   phone: string;
+
   dob1: string;
   dob2: string;
+
   businessLength1: string;
   moaShare1: string;
   revenue2024_1: string;
@@ -348,6 +352,7 @@ type FormData = {
   profit2022_1: string;
   managementPay1: string;
   rentalIncome1: string;
+
   businessLength2: string;
   moaShare2: string;
   revenue2024_2: string;
@@ -357,8 +362,9 @@ type FormData = {
   managementPay2: string;
   rentalIncome2: string;
 } & {
-  [key: string]: string; // 👈 Allow dynamic keys like homeLoan1, autoLoan2, etc.
+  [key: string]: string;
 };
+
 
 
   if (step === 1) {
